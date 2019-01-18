@@ -1,0 +1,161 @@
+﻿@model ListViewModel
+@*
+
+*@
+
+<h3 id="contentName">@Model.ContentName</h3>
+
+@foreach (var item in Model.viewLevels)
+{
+
+    <div class="card table-bordered" style="width:100%;" name="@item.id">
+        <div class="btn  stick" style="width:100%;background-color:darkred">
+            <span class="badge pull-left" title="Delete" id="@item.id" data-value="@item.Contentid" name="delete"><span class="glyphicon glyphicon-minus"></span></span>
+            <span class="badge pull-left" title="Edit" data-value="@item.Contentid" id="@item.id" name="edit"><span class="glyphicon glyphicon-edit"></span></span>
+            <span class="badge pull-right" title="CopyCode" id="@item.id" name="codecopy"><span class="glyphicon glyphicon-copy"></span></span>
+
+            @item.Levelid
+
+            @if (!string.IsNullOrEmpty(item.LevelidName))
+            {
+                <text>@item.LevelidName</text>
+            }
+        </div>
+        @if (item.LevelImage != null)
+        {
+            <img class="card-img-top" src="data:image;base64,@System.Convert.ToBase64String(item.LevelImage)" />
+        }
+
+        <div class="card-body" name="@item.id">
+
+            <pre>@item.LevelContent</pre>
+
+
+        </div>
+    </div><br />
+
+   
+}
+
+
+<script>
+
+
+    $(document).ready(() => {
+        //bigImage
+        $(".card-img-top").click(function () {
+            $(".bigImage img").attr("src","")
+           
+            var srcImage = $(this).attr("src")
+            if (srcImage != null) {
+                $(".bigImage img").attr("src", srcImage)
+                $(".bigImage").fadeToggle("fast");
+            }
+            $("#bigImageModal").modal("show")
+        })
+
+        //bigImage Modal form is closed
+        $('#bigImageModal').on('hidden.bs.modal', function () {
+
+            $(".bigImage img").hide();
+
+        })
+        //bigImage Modal form is open
+        $('#bigImageModal').on('show.bs.modal', function () {
+
+            $(".bigImage img").show();
+
+        })
+
+
+        /// Update Viewlevel
+        $("span[name='edit']").click(function (event) {
+
+            var id = $(this).attr("id")
+             
+           
+            $.ajax({
+
+                type: "post",
+                url: "/viewlevel/Getlevel",
+                data: { id: id },
+                success: function (result) {
+
+                  // alert(JSON.stringify(result))
+                    
+                    $("#updateModal #ViewLevelwithImage_Levelid").val(result.levelid).attr('disabled', 'disabled')
+                    $("#updateModal #ViewLevelwithImage_LevelidName").val(result.levelidName)
+                    $("#updateModal #ViewLevelwithImage_LevelContent").val(result.levelContent)
+                    
+                  
+                    var levelId = "<input type='hidden' data-val='true' id='ViewLevelwithImage_Levelid' name='ViewLevelwithImage.Levelid' value=' " + result.levelid + "'>"
+
+                    var normalId = "<input type='hidden' data-val='true' id='ViewLevelwithImage_id' name='ViewLevelwithImage.id' value=' " + result.id + "'>"
+                    $("#updateModal #ViewLevelwithImage_LevelImage").before(levelId)
+                    $("#updateModal #ViewLevelwithImage_LevelImage").before(normalId)
+                   
+
+                    if (result.levelImage != null) {
+
+                        var oldImage = "<img class='card-img-top' src='data:image;base64," + result.levelImage + "'/>"
+                        $("#updateModal #ViewLevelwithImage_LevelImage").before(oldImage);
+
+                    }
+                    $("#updateModal").modal("show")
+                },
+                error: function (error) {
+
+                },
+                complete: function (xhr, status) {
+
+                }
+
+            })
+
+        })
+
+        /// Delete viewlevel
+        $("span[name='delete']").click(function (event) {
+
+            var id = $(this).attr("id")
+
+            if (confirm("Are you delete!")) {
+
+                $.ajax({
+
+                    type: "post",
+                    url: "/viewlevel/delete",
+                    data: { id: id },
+                    success: function (result) {
+
+                        alertify.error("Deleted..")
+                        
+                    },
+                    error: function (error) {
+
+                    },
+                    complete: function (xhr, status) {
+
+                    }
+
+                })
+
+            }
+
+
+
+        })
+
+
+
+
+    })
+
+</script>
+
+
+
+
+
+
+

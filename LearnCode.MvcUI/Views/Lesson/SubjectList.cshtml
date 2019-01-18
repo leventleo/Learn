@@ -1,0 +1,163 @@
+﻿@model LearnCode.MvcUI.Models.ListViewModel
+@{
+    ViewData["Title"] = "SubjectList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="container-fluid" style="margin-top:10px">
+
+
+    <table class="table table-bordered">
+        <caption><h3 style="color:white">@Model.LessonName</h3></caption>
+        <thead>
+            <tr>
+                <td>
+                    Subject Delete
+                </td>
+                <td>
+                    Subject Name
+                </td>
+                <td>
+                    Action
+                </td>
+                <td>
+                    Creat Date
+                </td>
+                <td>
+                    Update Time
+                </td>
+                <td>
+                    Is Active
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+
+            @if (Model.Subjects.Count != 0)
+            {
+                @foreach (var item in Model.Subjects)
+                {
+            <tr>
+               
+                <td> 
+               <span value="Delete" data-value="@item.id" class="btn btn-danger  glyphicon glyphicon-trash removesubject" data-toggle="modal" data-target="#removeSubjectModalForm"></span>
+                     
+                </td>
+                <td>
+                                      
+                    @Html.ActionLink(item.SubjectName, "contentlist", "content", new { id = item.id, ReturnUrl = "/lesson/subjectlist/" + item.Lessonid })
+                    <span change="@item.id" class="badge" style="color:#ff6a00;background-color:#1f1f1f">@Model.Contents.Where(x => x.Subjectid == item.id).Count()</span>
+                </td>
+                <td>
+                    <span name="@item.SubjectName " id="@item.id" class="badge" style="background-color:#ff6a00" data-toggle="modal" data-target="#primaryModal">
+                        <span class="glyphicon glyphicon-plus-sign success"></span> Content
+                    </span>
+
+
+                </td>
+
+                <td>@item.CreatTime</td>
+                <td>@item.UpdateTime</td>
+                <td><input class="checkbox" type="checkbox" checked="@item.IsActive"></td>
+            </tr>
+                }
+            }
+            else
+            {
+                <tr class="text-center"><td colspan="5">Empty....</td></tr>
+            }
+
+
+
+        </tbody>
+        <tfoot>
+            <tr>Total Count : @Model.Subjects.Count</tr>
+        </tfoot>
+
+    </table>
+
+</div>
+ 
+@*Add Content Modal form*@
+
+<div class="modal fade" id="primaryModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-primary " role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#ff6a00!important;height:60px">
+
+                <h4 class="modal-title" id="baslik"></h4>
+
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div id="result" class="alert"></div>
+            <div class="modal-body">
+
+
+                <form asp-action="add" asp-controller="Content" method="post" data-ajax="true" data-ajax-method="post" data-ajax-complete="complete">
+
+                    <div class="col-md-12">
+                        <input class="form-control" name="content" type="text" placeholder="Enter Subject..">
+                        <input type="hidden" name="returnUrl" value="Subjectlist" />
+                        <input type="hidden" name="subjectid" value="@Model.selectedLesson" />
+                        <input type="hidden" name="id" value="" />
+                        <span class="help-block"></span>
+                    </div>
+                    <button class="btn btn-primary" type="submit"  id="contentAddForm">Save Changes</button>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+
+                <button  class="btn btn-danger" type="button" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+@*Delete Subject Modal Form*@
+
+<div class="modal fade" id="removeSubjectModalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-primary" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#ff0000!important;height:60px">
+
+                <h4 class="modal-title"></h4> <span class="modal-title"> Are you sure DELETE ?</span>
+
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            
+            <div class="modal-body" style="color:black!important">
+                <div id="subjectChilds">
+
+
+                </div>
+
+                <form method="post" asp-controller="subject" asp-action="remove">
+
+                    <input type="submit" value="Delete" class="btn btn-danger" />
+                    <input type="hidden" name="id" value="" class="subjectid"/>
+                </form>
+            </div>
+            <div class="modal-footer " style="background-color:red">
+                <button class="btn btn-info" type="button" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    
+
+</script>

@@ -1,0 +1,125 @@
+﻿@model LearnCode.MvcUI.Models.ListViewModel
+
+@{
+    ViewData["Title"] = "Command List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (TempData["info"] != null)
+{
+
+    <span class="col-md-12 alert alert-success">@TempData["info"]</span>
+}
+    <div class="container-fluid">
+
+
+
+        <span class="glyphicon glyphicon-plus btn btn-success " style="background-color:green" data-toggle="modal" data-target="#addCommandModalForm"> Add </span>
+        @if (Model.CommandIndices.Count > 0)
+        {
+            <input id="commandsearch" class="form-control " type="text" placeholder="Search Command.." style="width:100%" />
+            <table class="table-condensed" id="commandTable">
+
+                <thead>
+                    <tr>
+                        <td>Lesson</td>
+                        <td>Command</td>
+                        <td>Descripition</td>
+                        <td>Action</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.CommandIndices)
+                    {
+
+                        <tr>
+                            <td>@item.LessonName</td>
+                            <td>@item.Command</td>
+                            <td>@item.Description</td>
+                            <td>
+
+                                <span class="btn btn-danger btn-block">
+                                    <span class=" glyphicon glyphicon-trash"></span>
+                                    @Html.ActionLink("Delete", "delete", "command", new { id = item.id })
+                                </span>
+                            </td>
+                        </tr>
+
+                    }
+
+                </tbody>
+            </table>
+
+        }
+
+
+
+        else
+        {
+
+            <div class="container-fluid row">
+
+                <span class="alert alert-info col-md-12" style="width:100%">List empty</span>
+
+            </div>
+
+        }
+    </div>
+
+@*Add Command Modal Form*@
+
+<div class="modal fade" id="addCommandModalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-primary " role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#ff6a00!important;height:60px">
+
+                <h4 class="modal-title"> + Add new Command</h4> 
+
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div id="result" class="alert"></div>
+            <div class="modal-body" style="color:black!important">
+
+                <form method="post" asp-controller="command" asp-action="Add">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group">
+                        <label asp-for="CommandIndex.Lessonid" class="control-label"></label>
+                        <select asp-for="CommandIndex.Lessonid" asp-items="@(new SelectList(Model.Lessons.Select(x=> new {id=x.id ,LessonName=x.LessonName}),"id","LessonName"))" class="form-control"></select>
+                        <span asp-validation-for="CommandIndex.Lessonid" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="CommandIndex.Command" class="control-label"></label>
+
+                        <input asp-for="CommandIndex.Command" class="form-control" />
+
+                        <span asp-validation-for="CommandIndex.Command" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="CommandIndex.Description" class="control-label"></label>
+
+                        <input asp-for="CommandIndex.Description" class="form-control" />
+
+                        <span asp-validation-for="CommandIndex.Description" class="text-danger"></span>
+                    </div>
+
+
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-success" />
+                    </div>
+                </form>
+
+
+            </div>
+            <div class="modal-footer">
+
+                <button class="btn btn-danger" type="button" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+

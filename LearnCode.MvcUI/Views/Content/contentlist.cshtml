@@ -1,0 +1,454 @@
+﻿
+@model LearnCode.MvcUI.Models.ListViewModel
+
+
+@{
+    ViewData["Title"] = "contentlist";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/css/bootstrap_leo.css" rel="stylesheet" />
+<link href="~/SyntaxHighlighter/sass/shCore.css" rel="stylesheet" />
+
+<style>
+
+    .stick {
+        position: -webkit-sticky; /* Safari */
+        position: sticky;
+        top: 60px;
+    }
+</style>
+
+<nav id="contentmenu" class="navbar navbar-default navbar-fixed-top ">
+    <div class="container">
+        <div class="navbar-header ">
+
+            <div class="navbar-brand"><img src="~/images/Code_Icon.PNG" width="80" height="30" /></div>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+        </div>
+        <div class="navbar-collapse collapse">
+
+            <div class="nav navbar-nav">
+                <table class="table-condensed">
+                    <tbody>
+                        @foreach (var content in Model.Contents)
+                        {
+                            <tr>
+                                <td>
+
+                                    <span name="@content.id" data-value="@content.ContentName" class="badge" data-toggle="modal" data-target="#deleteModal"><span class="glyphicon glyphicon-minus"></span></span>
+                                    <span name="@content.id" data-value="@content.ContentName" class="badge" data-toggle="modal" data-target="#editContentModal"><span class="glyphicon glyphicon-edit"></span></span>
+                                    <span name="@content.id" data-value="@content.ContentName" class="badge" data-toggle="modal" data-target="#listContentModal"><span class="glyphicon glyphicon-list"></span></span>
+
+                                </td>
+                                <td>
+                                    <span>@content.ContentName</span>
+
+                                </td>
+                                <td>
+                                    <span class="badge" style="background-color:darkred;color:white;margin-left:10px;width:50px">
+                                        @Model.viewLevels.Where(x => x.Contentid == content.id).Count()
+                                    </span>
+                                </td>
+                                <td>
+                                    <span name="@content.id" data-value="@content.ContentName" class="badge" data-toggle="modal" data-target="#addModal"><span class="glyphicon glyphicon-plus"></span>ViewLevel</span>
+
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+</nav>
+
+<style>
+
+    /*.sidemenu {
+        position: fixed;
+        left: 0;
+        top: 60px;
+        width: 500px;
+    }*/
+
+    .badge:hover {
+        background-color: #d91286 !important;
+        cursor: pointer;
+    }
+
+
+    #ajaxsubmit {
+        background-color: transparent !important;
+        border: none
+    }
+</style>
+
+
+
+
+
+
+
+<div class="row" style="margin-top:70px">
+
+
+    <div class="col-md-6">
+
+        <div class="sidemenu">
+            @if (Model.Contents.Count > 0)
+            {<h4 style="color:white">@Model.LessonName / @Model.SubjectName / <span class="badge" data-toggle="modal" data-target="#addContentModal"><span class="glyphicon glyphicon-plus"></span>Content</span> </h4>
+            <table class="table-condensed">
+
+                <thead style="text-align:center">
+                    <tr>
+                        <td>
+                            Action
+                        </td>
+                        <td>
+                            Content
+                        </td>
+                        <td>
+                            Entry Count
+                        </td>
+                        <td>
+                            ViewLevel Action
+                        </td>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+
+
+
+                    @foreach (var content in Model.Contents)
+                    {
+                        <tr>
+                            <td>
+
+                                <span name="@content.id" data-value="@content.ContentName" class="badge" data-target="#deleteModal"><span class="glyphicon glyphicon-minus"></span></span>
+                                <span name="@content.id" data-value="@content.ContentName" class="badge" data-toggle="modal" data-target="#editContentModal"><span class="glyphicon glyphicon-edit"></span></span>
+                                <span name="@content.id" data-value="@content.ContentName" class="badge" data-toggle="modal" data-target="#listContentModal"><span class="glyphicon glyphicon-list"></span></span>
+
+                            </td>
+                            <td>
+                                <span>@content.ContentName</span>
+
+                            </td>
+                            <td>
+                                <span class="badge" style="background-color:darkred;color:white;margin-left:10px;width:50px">
+                                    @Model.viewLevels.Where(x => x.Contentid == content.id).Count()
+                                </span>
+                            </td>
+                            <td>
+                                <span name="@content.id" data-value="@content.ContentName" class="badge" data-toggle="modal" data-target="#addModal"><span class="glyphicon glyphicon-plus"></span>ViewLevel</span>
+
+                            </td>
+                        </tr>
+                    }
+
+
+                </tbody>
+
+            </table>
+        }
+        else
+        {
+            <div class="alert alert-info" width="100%">List empty..</div>
+        }
+
+
+        </div>
+
+
+
+
+
+    </div>
+
+    <div id="GetContentView" class="col-md-6" data-spy="scroll" data-target=".navbar" data-offset="50">
+
+
+    </div>
+
+
+</div>
+<div class="container-fluid bigImage"><img src="" /></div>
+
+<div class="modal fade" id="bigImageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+
+    <div class="container-fluid bigImage"><img src="" /></div>
+
+
+    <div class="modal-footer">
+
+        <button class="btn btn-danger" type="button" data-dismiss="modal">Close</button>
+    </div>
+
+
+</div>
+
+
+
+
+@*modal add View*@
+
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-primary " role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#ff6a00!important;height:60px">
+
+                <h4 class="modal-title addheader"></h4>/<h4 class="" modal-title" style="background-color:green;color:white">New View</h4>
+
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div id="result" class="alert"></div>
+            <div class="modal-body" style="color:black!important">
+
+                <form method="post" enctype="multipart/form-data" asp-controller="ViewLevel" asp-action="AddAsync">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="ViewLevelwithImage.Contentid" value="" id="Contentid" />
+                    <div class="form-group">
+                        <label asp-for="ViewLevelwithImage.Levelid" class="control-label"></label>
+                        <input asp-for="ViewLevelwithImage.Levelid" class="form-control" />
+                        <span asp-validation-for="ViewLevelwithImage.Levelid" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ViewLevelwithImage.LevelidName" class="control-label"></label>
+                        <input asp-for="ViewLevelwithImage.LevelidName" class="form-control" />
+                        <span asp-validation-for="ViewLevelwithImage.LevelidName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="comment">Comment:</label>
+                        <textarea class="form-control" asp-for="ViewLevelwithImage.LevelContent"></textarea>
+                        <span asp-validation-for="ViewLevelwithImage.LevelContent" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ViewLevelwithImage.LevelImage" class="control-label"></label>
+                        <input type="file" asp-for="ViewLevelwithImage.LevelImage" class="form-control" />
+                        <span asp-validation-for="ViewLevelwithImage.LevelImage" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-success" />
+                    </div>
+                </form>
+
+
+            </div>
+            <div class="modal-footer">
+
+                <button class="btn btn-danger" type="button" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+@*modal delete Content*@
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-primary" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#ff0000!important;height:60px">
+
+                <h4 class="modal-title addheader"></h4> <span class="modal-title"> Are you sure DELETE ?</span>
+
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div id="result" class="alert"></div>
+            <div class="modal-body" style="color:black!important">
+
+                <div id="countlevel"> </div>
+                <form method="post" enctype="multipart/form-data" asp-controller="content" asp-action="delete">
+                    <input type="hidden" name="id" value="" class="contentid" />
+                    <input type="submit" value="Delete" class="btn btn-danger" />
+                </form>
+            </div>
+            <div class="modal-footer " style="background-color:red">
+                <button class="btn btn-info" type="button" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+@*UpdateModal View*@
+
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-primary " role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#ff6a00!important;height:60px">
+
+                <h4 class="modal-title addheader">UPDATE</h4>
+
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div id="result" class="alert"></div>
+            <div class="modal-body" style="color:black!important">
+
+                <form id="updateForm" method="post" enctype="multipart/form-data" asp-controller="ViewLevel" asp-action="updateAsync">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="ViewLevelwithImage.Contentid" value="" id="Contentid" />
+                    <div class="form-group">
+                        <label asp-for="ViewLevelwithImage.Levelid" class="control-label"></label>
+                        <input asp-for="ViewLevelwithImage.Levelid" class="form-control" />
+                        <span asp-validation-for="ViewLevelwithImage.Levelid" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ViewLevelwithImage.LevelidName" class="control-label"></label>
+                        <input asp-for="ViewLevelwithImage.LevelidName" class="form-control" />
+                        <span asp-validation-for="ViewLevelwithImage.LevelidName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="comment">Comment:</label>
+                        <textarea class="form-control" asp-for="ViewLevelwithImage.LevelContent"></textarea>
+                        <span asp-validation-for="ViewLevelwithImage.LevelContent" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ViewLevelwithImage.LevelImage" class="control-label"></label>
+                        <input type="file" asp-for="ViewLevelwithImage.LevelImage" class="form-control" />
+                        <span asp-validation-for="ViewLevelwithImage.LevelImage" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="Update" class="btn btn-success" />
+                    </div>
+                </form>
+
+
+            </div>
+            <div class="modal-footer">
+
+                <button class="btn btn-danger" type="button" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+@*Modal add Content*@
+<div class="modal fade" id="addContentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-primary " role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#ff6a00!important;height:60px">
+
+                <h4 class="modal-title">@Model.SubjectName</h4>
+
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div id="result" class="alert"></div>
+            <div class="modal-body">
+
+
+                <form asp-action="add" asp-controller="Content" method="post" data-ajax="true" data-ajax-method="post" data-ajax-complete="complete">
+
+                    <div class="col-md-12">
+                        <label for="content" style="color:black">Content</label>
+                        <input class="form-control" name="content" type="text" placeholder="Enter Content head..">
+                        <input type="hidden" name="id" value=@Model.selectedSubject />
+                        <input type="hidden" name="returnUrl" value="contentlist" />
+                        <span class="help-block"></span>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Save Changes</button>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+
+                <button class="btn btn-danger" type="button" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+@*Modal update Content*@
+
+<div class="modal fade" id="editContentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-primary " role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#ff6a00!important;height:60px">
+
+                <h4 class="modal-title">@Model.SubjectName</h4>
+
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div id="result" class="alert"></div>
+            <div class="modal-body">
+
+
+                <form asp-action="update" asp-controller="Content" method="post" data-ajax="true" data-ajax-method="post" data-ajax-complete="complete">
+
+                    <div class="col-md-12">
+                        <label for="content" style="color:black">Content</label>
+                        <input class="form-control" name="content" type="text" placeholder="Enter Subject..">
+                        <input type="hidden" name="id" value="" />
+                        <span class="help-block"></span>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Update</button>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+
+                <button class="btn btn-danger" type="button" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+<script>
+
+    function Success() {
+
+        alertify.success("Listing...")
+    }
+
+
+
+
+</script>
+
+
+@section syntax {
+
+    <script src="~/SyntaxHighlighter/js/shCore.js"></script>
+
+    <script src="~/SyntaxHighlighter/js/shBrushCSharp.js"></script>
+
+
+    <script type="text/javascript" src="~/SyntaxHighlighter/js/shCore.js">
+        SyntaxHighlighter.all()
+    </script>
+
+}

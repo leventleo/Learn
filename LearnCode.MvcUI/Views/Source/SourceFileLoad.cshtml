@@ -1,0 +1,83 @@
+﻿@model ListViewModel
+
+
+@{
+    ViewData["Title"] = "SourceFileLoad";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="form-inline">
+
+    <form asp-action="SourceFileLoad" method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="SourceFileStub.SourceType" class="control-label"></label>
+            <input asp-for="SourceFileStub.SourceType" class="form-control" />
+            <span asp-validation-for="SourceFileStub.SourceType" class="text-danger"></span>
+        </div>
+
+
+        <div class="form-group">
+            <label asp-for="SourceFileStub.File" class="control-label"></label>
+            <input asp-for="SourceFileStub.File" type="file" class="form-control" />
+            <span asp-validation-for="SourceFileStub.File" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </form>
+
+</div>
+
+<div class=" row col-12" style="margin-top:30px">
+    @if (TempData["Error"] != null)
+    {
+
+        <span class="alert alert-danger">@TempData["Error"]</span>
+    }
+    <div class="form-inline"><input id="filessearch" class="form-control" type="text" placeholder="Search Files.." />
+    <table class="table-condensed text-center" id="filesTable">
+        
+        <thead>
+            <tr>
+                <td>SourceType</td>
+                <td>FileName</td>
+                <td>File Size</td>
+                <td>File Icon</td>
+                <td>Download</td>
+                <td>Delete File</td>
+            </tr>
+        </thead>
+        <tbody>
+
+            @if (Model != null)
+            {
+                @foreach (var file in Model.SourceFiles)
+                {
+                    <tr>
+                        <td>@file.SourceType</td>
+                        <td>@file.FileName</td>
+                        <td>
+                            @file.Length /Kb
+                        </td>
+                        <td><span class="glyphicon glyphicon-file"></span></td>
+                        <td><span class="btn btn-success">
+                            <span id=@file.id name="Download " class="glyphicon glyphicon-download"></span>@Html.ActionLink("Download", "download", "source", new { id = file.id, FileName = file.FileName })
+                            </span>
+                             
+                        </td>
+                        <td><span class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span>@Html.ActionLink("Delete", "deletefile", "source", new { id = file.id })</span></td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+
+    </table>
+
+
+</div>
+
+ 

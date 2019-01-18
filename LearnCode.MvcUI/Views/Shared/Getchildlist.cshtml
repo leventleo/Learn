@@ -1,0 +1,58 @@
+﻿@model ListViewModel
+@*
+
+*@
+
+
+@if (Model.Contents != null)
+{
+    <h3>@Model.SubjectName</h3>
+
+    @foreach (var item in Model.Contents)
+    {
+        <ul class="list-group">
+
+            @if (item.ViewLevels.Count > 0)
+            {
+                <li class="list-group-item" style="color:white;background-color:#808080">
+                    @item.ContentName <span class="badge" style="color:white;background-color:red">ViewLevel Total :@item.ViewLevels.Count()</span>
+                    <span class="glyphicon glyphicon-plus-sign" name="openItemList" data-value="@item.id@item.id"></span>
+                    <span id="@item.id@item.id" style="display:none;text-align:left">
+                       <hr />
+                       
+                        @foreach (var view in item.ViewLevels)
+                        {
+                            <span class="btn btn-danger" title="@view.LevelContent">@view.Levelid   @view.LevelContent.Substring(0, view.LevelContent.Length > 74 ? 74 : view.LevelContent.Length)</span>
+                            
+                        }
+                        
+                    </span>
+                </li>
+
+            }
+            else
+            {
+                <li class="list-group-item">@item.ContentName </li>
+            }
+
+        </ul>
+    }
+
+   
+}
+
+<script>
+
+    $(document).ready(function () {
+
+        $("span[name='openItemList']").click(function () {
+
+            var id = $(this).attr("data-value")
+
+            $("#" + id).fadeToggle("Fast")
+        })
+
+    })
+
+
+</script>

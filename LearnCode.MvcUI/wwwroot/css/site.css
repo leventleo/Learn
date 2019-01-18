@@ -1,0 +1,204 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\ 
+for details on configuring this project to bundle and minify static web assets. */
+body {
+    padding-top:70px;
+    padding-bottom: 20px;
+}
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+/* Carousel */
+.carousel-caption p {
+    font-size: 20px;
+    line-height: 1.4;
+}
+
+/* Make .svg files in the carousel display properly in older browsers */
+.carousel-inner .item img[src$=".svg"] {
+    width: 100%;
+}
+
+/* QR code generator */
+#qrCode {
+    margin: 15px;
+}
+
+/* Hide/rearrange for smaller screens */
+@media screen and (max-width: 767px) {
+    /* Hide captions */
+    .carousel-caption {
+        display: none;
+    }
+}
+
+
+ a:hover{
+
+     color:#0094ff !important;
+     text-decoration:underline;
+    
+ }
+
+ li{
+
+     margin-left:20px !important;
+       
+
+ }
+
+ tbody tr:hover {
+
+     color:#ff6a00!important;
+     cursor:pointer;
+     background-color:#313131
+
+
+ }
+
+thead > tr {
+    background-color: #ff6a00 !important;
+    color:white
+}
+
+body{
+    background-color:#272626;
+    color:white
+}
+
+tbody{
+    background-color:#3e3e3e
+}
+
+.SuccesResult {
+    border-left: 10px solid #4cff00;
+    height: 60px;
+    background-color: #9cd98a;
+    text-align: center;
+    color: green;
+    padding-top: 20px;
+    display: block
+}
+
+.ErrorResult {
+    border-left: 10px solid #ff0000;
+    height: 60px;
+    background-color: #b94646;
+    text-align: center;
+    color: white;
+    padding-top: 20px;
+    display: block
+}
+
+td a{
+    color:white!important
+
+}
+
+
+.contentbtn {
+    cursor: pointer;
+    padding-left:3px;
+    color: black!important;
+    padding-top:5px;
+    padding-bottom: 5px;
+    width:95%;
+    background-color:white
+}
+
+.contentbtn:hover {
+    cursor: pointer;
+    color:white;
+    background-color:#0094ff;
+         
+}
+
+.contentbtn:hover span#arrow {
+        display:inline-block
+    }
+
+textarea {
+    resize:vertical;
+}
+
+ 
+.stick {
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 60px;
+}
+
+
+@media screen and (min-width: 600px) {
+     
+    .sidemenu table{
+        display:block
+    }
+
+     
+
+    #contentmenu {
+        display: none;
+    }
+
+    #mainmenu{
+        display:block;
+    }
+}
+
+@media screen and (max-width: 990px) {
+
+    #GetContentView{
+        margin-top:30px;
+
+    }
+}
+
+
+@media screen and (max-width: 600px) {
+
+    .sidemenu table {
+        display: none
+    }
+    
+    #contentmenu {
+        display: block;
+    }
+    #contentName{
+        display:block
+    }
+    #mainmenu {
+        display: none;
+    }
+}
+
+.minimenuContent{
+
+
+    color:black;
+    background-color:white;
+    width:100%;
+
+
+}
+
+
+.bigImage{
+    display:none;
+    position:absolute;
+    top:35%;
+    left:10%;
+    width:100%;
+     
+
+}
+
+    .bigImage img {
+        width: 80%;
+        height:50%;
+        
+    }

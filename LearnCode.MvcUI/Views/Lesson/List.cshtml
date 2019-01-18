@@ -1,0 +1,115 @@
+﻿@model LearnCode.MvcUI.Models.ListViewModel
+
+@{
+    ViewData["Title"] = "List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    td a {
+        color: white !important
+    }
+</style>
+
+<div class="container-fluid" style="margin-top:10px">
+
+    <input id="lessonsearch" class="form-control " type="text" placeholder="Search Command.." style="width:100%" />
+    <table class="table table-bordered" id="lessonTable">
+        <thead>
+            <tr>
+                <td>
+                    Lesson Name
+                </td>
+                <td>
+                    Action
+                </td>
+                <td>
+                    Creat Date
+                </td>
+                <td>
+                    Update Time
+                </td>
+                <td>
+                    Is Active
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model.Lessons)
+            {
+                <tr>
+                    <td>
+                        @Html.ActionLink(item.LessonName, "subjectlist", "lesson", new { id = item.id })<span change="@item.id" class="badge" style="color:#ff6a00;background-color:#1f1f1f">@Model.Subjects.Where(x => x.Lessonid == item.id).Count()</span>
+                    </td>
+                    <td>
+                        <span name="@item.LessonName " id="@item.id" class="badge" style="background-color:#ff6a00" data-toggle="modal" data-target="#primaryModal">
+                            <span class="glyphicon glyphicon-plus-sign success"></span> Subject
+                        </span>
+
+                    </td>
+                    <td>@item.CreatTime</td>
+                    <td>@item.UpdateTime</td>
+                    <td><input class="checkbox" type="checkbox" checked="@item.IsActive"></td>
+                </tr>
+            }
+
+        </tbody>
+        <tfoot>
+            <tr>Total Count :@Model.Lessons.Count() </tr>
+        </tfoot>
+
+    </table>
+
+</div>
+
+
+
+<div class="modal fade" id="primaryModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-primary " role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#ff6a00!important;height:60px">
+
+                <h4 class="modal-title" id="baslik"></h4>
+
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div id="result" class="alert"></div>
+            <div class="modal-body">
+
+
+                <form asp-action="add" asp-controller="subject" method="post" data-ajax="true" data-ajax-method="post" data-ajax-complete="complete">
+
+                    <div class="col-md-12">
+                        <input class="form-control" name="subject" type="text" placeholder="Enter Subject..">
+                        <input type="hidden" name="id" value="" />
+                        <span class="help-block"></span>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Save Changes</button>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+
+                <button  type="submit" class="btn btn-danger" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+ <script>
+ 
+    
+
+ </script>
+
+
+
+
+

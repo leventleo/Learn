@@ -1,0 +1,65 @@
+﻿@model List<LearnCode.MvcUI.Models.CompositViewModel>
+@{
+    ViewData["Title"] = "DeepSearch";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+<div class="container-fluid" style="margin-top:10px">
+
+
+    <table class="table table-bordered">
+        <caption><h3 style="color:white">Search Result</h3></caption>
+        <thead>
+            <tr>
+                <td>
+                    Lesson Name
+                </td>
+                <td>
+                    Subject Name
+                </td>
+                <td>
+                    Content Name
+                </td>
+                <td>
+                    ViewLevel Content
+                </td>
+                <td>
+                    Link
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+
+            @if (Model.Count()!= 0)
+            {
+               @for (int i = 0; i < Model.Count(); i++)
+               {
+
+               
+            <tr>
+                <td>@Model[i].LessonName</td>
+                <td>@Model[i].SubjectName</td>
+                <td>@Model[i].ContentName</td>
+                <td><pre>@Model[i].ViewLevelName</pre></td>
+
+            </tr>
+                }
+            }
+            else
+            {
+                <tr class="text-center"><td colspan="5">Empty....</td></tr>
+            }
+
+
+
+        </tbody>
+        <tfoot>
+            <tr>Total Count : @Model.Count()</tr>
+        </tfoot>
+
+    </table>
+
+</div>
