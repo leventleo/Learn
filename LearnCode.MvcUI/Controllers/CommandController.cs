@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace LearnCode.MvcUI.Controllers
-{
+{   
     public class CommandController : Controller
     {
         private readonly ICommandIndex _command;

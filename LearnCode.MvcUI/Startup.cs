@@ -47,10 +47,11 @@ namespace LearnCode.MvcUI
             services.AddSingleton<IFileStore, FileStoreDal>();
             services.AddSingleton<IRedisClient, RedisClient>();
             services.AddResponseCaching();
-            //services.AddDistributedRedisCache(option => {
-            //    option.Configuration = "127.0.0.1:6379";
-            //    option.InstanceName = "master";
-            //});
+            services.AddDistributedRedisCache(option =>
+            {
+                option.Configuration = "127.0.0.1:6379";
+                option.InstanceName = "master";
+            });
             services.AddSignalR();
             services.AddMvc();
 
