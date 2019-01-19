@@ -32,16 +32,24 @@ namespace LearnCode.MvcUI.Controllers
             {
                string userkey = Security.HashCompute(user.UserName, "leo");
                 string Passwordkey = Security.HashCompute(user.UserName, "leo");
-                _user.GetList(u => u.UserName == userkey && u.Password==Passwordkey);
+             var loginUser=  _user.GetList(u => u.UserName == userkey && u.Password==Passwordkey).Result.SingleOrDefault();
 
-                Claim UserName = new Claim(ClaimTypes.Name, user.UserName);
-                Claim Role = new Claim(ClaimTypes.Role, "Admin");
-                List<Claim> claims = new List<Claim> { UserName,Role};
-                var Identity = new ClaimsIdentity(claims);
+                if (loginUser!=null)
+                {
+                    Claim UserName = new Claim(ClaimTypes.Name, user.UserName);
+                    Claim Role = new Claim(ClaimTypes.Role, "Admin");
+                    List<Claim> claims = new List<Claim> { UserName, Role };
+                    var Identity = new ClaimsIdentity(claims);
 
-                HttpContext.User = new ClaimsPrincipal(Identity);
+                    HttpContext.User = new ClaimsPrincipal(Identity);
 
-                return RedirectToAction("list", "lesson");
+                    return RedirectToAction("list", "lesson"); 
+                }
+                else
+                {
+                    TempData["Error"] = "Username or Password not correct !";
+                    return View();
+                }
 
             }
             return View();
