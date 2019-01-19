@@ -46,6 +46,8 @@ namespace LearnCode.MvcUI
             services.AddSingleton<ICommandIndex, CommandIndexDal>();
             services.AddSingleton<IFileStore, FileStoreDal>();
             services.AddSingleton<IRedisClient, RedisClient>();
+            services.AddSingleton<IUser, UserDal>();
+            services.AddSingleton<IRole, RoleDal>();
             services.AddResponseCaching();
             services.AddDistributedRedisCache(option =>
             {
@@ -91,16 +93,7 @@ namespace LearnCode.MvcUI
             });
 
 
-            app.Use(async (context, next) =>
-            {
-               
-
-               
-
-                await next();
-            });
-
-
+            
 
             app.UseStaticFiles();
             app.UseCookiePolicy();
