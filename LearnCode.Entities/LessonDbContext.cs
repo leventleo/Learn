@@ -28,7 +28,8 @@ namespace LearnCode.Entities
         public DbSet<CommandIndex> CommandIndices { get; set; }
         public DbSet<SourceFile>  SourceFiles { get; set; }
         public DbSet<FileStore> FileStores { get; set; }
-
+        public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
     }
 
 
