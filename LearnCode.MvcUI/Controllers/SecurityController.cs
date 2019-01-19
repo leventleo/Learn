@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using LearnCode.Entities;
+using LearnCode.MvcUI.Models;
 using LLearnCode.Bussiness.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,10 +13,12 @@ namespace LearnCode.MvcUI.Controllers
     public class SecurityController : Controller
     {
         private readonly IUser _user;
+        private readonly IRole _role;
 
-        public SecurityController(IUser user )
+        public SecurityController(IUser user ,IRole role)
         {
             _user = user;
+            _role = role;
         }
 
         public IActionResult login()
@@ -31,7 +34,7 @@ namespace LearnCode.MvcUI.Controllers
             if (ModelState.IsValid)
             {
                string userkey = Security.HashCompute(user.UserName, "leo");
-                string Passwordkey = Security.HashCompute(user.UserName, "leo");
+                string Passwordkey = Security.HashCompute(user.Password, "leo");
              var loginUser=  _user.GetList(u => u.UserName == userkey && u.Password==Passwordkey).Result.SingleOrDefault();
 
                 if (loginUser!=null)
@@ -59,21 +62,22 @@ namespace LearnCode.MvcUI.Controllers
         public IActionResult Add()
         {
 
-            User model = new User();
+            ListViewModel model = new ListViewModel();
+            model.Roles = _role.GetList().Result;
 
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult Add(User user)
+        public IActionResult Add(User User)
         {
             if (ModelState.IsValid)
             {
-                string userkey = Security.HashCompute(user.UserName, "leo");
-                string Passwordkey = Security.HashCompute(user.UserName, "leo");
-                user.UserName = userkey;
-                user.Password = Passwordkey;
-                _user.Add(user);
+                string userkey = Security.HashCompute(User.UserName, "leo");
+                string Passwordkey = Security.HashCompute(User.Password, "leo");
+                User.UserName = userkey;
+                User.Password = Passwordkey;
+                _user.Add(User);
                 _user.Save();
                 return RedirectToAction("login", "security");
             }
@@ -82,8 +86,6 @@ namespace LearnCode.MvcUI.Controllers
                 TempData["Error"] = "İşlem yapılamadı";
                 return View();
             }
-            
-            
             
         }
 

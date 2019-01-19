@@ -102,7 +102,7 @@ namespace LearnCode.MvcUI
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=lesson}/{action=list}/{id?}");
+                    template: "{controller=security}/{action=login}/{id?}");
             });
             app.UseCors("CorsPolicy");
 

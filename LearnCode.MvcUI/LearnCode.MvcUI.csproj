@@ -5,6 +5,10 @@
     <TypeScriptToolsVersion>3.1</TypeScriptToolsVersion>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="SignalR\**" />
     <Content Remove="SignalR\**" />
@@ -36,7 +40,6 @@
 
   <ItemGroup>
     <Folder Include="Filters\" />
-    <Folder Include="Views\Security\" />
     <Folder Include="Views\Subject\" />
   </ItemGroup>
 

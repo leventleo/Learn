@@ -7,7 +7,6 @@ namespace LearnCode.Entities
     {
         
         public int id { get; set; }
-        public int Userid { get; set; }
         public string  RoleName { get; set; }
         
     }

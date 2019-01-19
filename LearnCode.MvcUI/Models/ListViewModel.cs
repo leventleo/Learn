@@ -22,6 +22,8 @@ namespace LearnCode.MvcUI.Models
         public int selectedSubject { get; set; }
         public int selectedLesson { get; set; }
         public Dictionary<string,int> KeyValues  { get; set; }
-        
+        public User User {get;set; }
+        public List<Role>  Roles { get; set; }
+
     }
 }
