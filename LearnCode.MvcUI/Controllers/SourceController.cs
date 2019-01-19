@@ -8,6 +8,7 @@ using System.Transactions;
 using LearnCode.Bussiness.Interfaces;
 using LearnCode.Entities;
 using LearnCode.MvcUI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -52,6 +53,7 @@ namespace LearnCode.MvcUI.Controllers
 
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> SourceFileLoad(SourceFileStub SourceFileStub)
         {
  
@@ -95,7 +97,7 @@ namespace LearnCode.MvcUI.Controllers
 
             return RedirectToAction("SourceFileLoad");
         }
-
+        [Authorize]
         public IActionResult deletefile(int id=0)
         {
 

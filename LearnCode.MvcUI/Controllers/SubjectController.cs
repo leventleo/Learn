@@ -6,6 +6,7 @@ using LearnCode.Bussiness.Interfaces;
 using LearnCode.Entities;
 using LearnCode.MvcUI.Models;
 using LLearnCode.Bussiness.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LearnCode.MvcUI.Controllers
@@ -43,6 +44,7 @@ namespace LearnCode.MvcUI.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Add(string subject, string id)
         {
             if (!string.IsNullOrEmpty(subject) && !string.IsNullOrEmpty(subject))
@@ -74,6 +76,7 @@ namespace LearnCode.MvcUI.Controllers
         //}
 
         [HttpPost]
+        [Authorize]
         public IActionResult Remove(int id = 0 )
         { //TODO : Refactoring Unit of Work
             var lessonid = 0;

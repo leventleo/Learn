@@ -6,10 +6,12 @@ using LearnCode.Bussiness.Interfaces;
 using LearnCode.Entities;
 using LearnCode.MvcUI.Models;
 using LLearnCode.Bussiness.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LearnCode.MvcUI.Controllers
 {
+    [Authorize]
     public class ContentController : Controller
     {
 
@@ -59,7 +61,7 @@ namespace LearnCode.MvcUI.Controllers
 
         }
 
-
+        [AllowAnonymous]
         public async Task<IActionResult> contentlist(int id, string ReturnUrl)
         {
             ListViewModel model = new ListViewModel();

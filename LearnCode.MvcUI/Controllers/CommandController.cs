@@ -5,11 +5,12 @@ using System.Threading.Tasks;
 using LearnCode.Bussiness.Interfaces;
 using LearnCode.Entities;
 using LearnCode.MvcUI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace LearnCode.MvcUI.Controllers
-{   
+{   [Authorize]
     public class CommandController : Controller
     {
         private readonly ICommandIndex _command;
@@ -20,7 +21,7 @@ namespace LearnCode.MvcUI.Controllers
             _command = command;
             _lesson = lesson;
         }
-
+        [AllowAnonymous]
         public  IActionResult Index()
         {
             

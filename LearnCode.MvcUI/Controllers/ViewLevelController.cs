@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Web;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace LearnCode.MvcUI.Controllers
 {
@@ -41,6 +41,7 @@ namespace LearnCode.MvcUI.Controllers
 
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> AddAsync(ViewLevelwithImage ViewLevelwithImage)
         {
             int Subjectid = 0;
@@ -130,6 +131,7 @@ namespace LearnCode.MvcUI.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> updateAsync(ViewLevelwithImage ViewLevelwithImage)
         {
             int Subjectid = 0;
@@ -172,6 +174,7 @@ namespace LearnCode.MvcUI.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult delete(int id=0)
         {
 

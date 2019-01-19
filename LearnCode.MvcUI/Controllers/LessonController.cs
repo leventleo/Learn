@@ -2,6 +2,7 @@
 using LearnCode.Entities;
 using LearnCode.MvcUI.Models;
 using LLearnCode.Bussiness.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
@@ -14,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace LearnCode.MvcUI.Controllers
 {
-
+    [Authorize]
     public class LessonController : Controller
     {
         private readonly ILesson _lesson;
@@ -59,7 +60,7 @@ namespace LearnCode.MvcUI.Controllers
         }
 
 
-
+        [AllowAnonymous]
         public async Task<IActionResult> List()
         {
             ListViewModel model = new ListViewModel();
@@ -118,7 +119,7 @@ namespace LearnCode.MvcUI.Controllers
             return Content(id.ToString());
         }
 
-
+        [AllowAnonymous]
         public async Task<IActionResult> Subjectlist(int id = 0)
         {
             ListViewModel model = new ListViewModel();
@@ -138,6 +139,7 @@ namespace LearnCode.MvcUI.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> ContentList(int id)
         {
             ListViewModel model = new ListViewModel
@@ -152,6 +154,7 @@ namespace LearnCode.MvcUI.Controllers
         }
         List<CompositViewModel> allTableJoin = new List<CompositViewModel>();
         [HttpPost]
+        [AllowAnonymous]
         public IActionResult DeepSearch(string search)
         {
             var _search = search.ToLower();
