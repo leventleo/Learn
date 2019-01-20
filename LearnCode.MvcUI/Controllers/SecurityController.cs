@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
 using LearnCode.Entities;
 using LearnCode.MvcUI.Models;
 using LLearnCode.Bussiness.Interfaces;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LearnCode.MvcUI.Controllers
@@ -15,7 +18,7 @@ namespace LearnCode.MvcUI.Controllers
         private readonly IUser _user;
         private readonly IRole _role;
 
-        public SecurityController(IUser user ,IRole role)
+        public SecurityController(IUser user, IRole role)
         {
             _user = user;
             _role = role;
@@ -33,20 +36,23 @@ namespace LearnCode.MvcUI.Controllers
         {
             if (ModelState.IsValid)
             {
-               string userkey = Security.HashCompute(user.UserName, "leo");
+                string userkey = Security.HashCompute(user.UserName, "leo");
                 string Passwordkey = Security.HashCompute(user.Password, "leo");
-             var loginUser=  _user.GetList(u => u.UserName == userkey && u.Password==Passwordkey).Result.SingleOrDefault();
-
-                if (loginUser!=null)
+                var loginUser = _user.GetList(u => u.UserName == userkey && u.Password == Passwordkey).Result.SingleOrDefault();
+                var role = _role.FindById(loginUser.Roleid).RoleName;
+                if (loginUser != null)
                 {
+
                     Claim UserName = new Claim(ClaimTypes.Name, user.UserName);
-                    Claim Role = new Claim(ClaimTypes.Role, "Admin");
+                    Claim Role = new Claim(ClaimTypes.Role, role);
                     List<Claim> claims = new List<Claim> { UserName, Role };
-                    var Identity = new ClaimsIdentity(claims);
+                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-                    HttpContext.User = new ClaimsPrincipal(Identity);
 
-                    return RedirectToAction("list", "lesson"); 
+                   HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,new ClaimsPrincipal(claimsIdentity));
+                      
+
+                    return RedirectToAction("list", "lesson");
                 }
                 else
                 {
@@ -58,7 +64,7 @@ namespace LearnCode.MvcUI.Controllers
             return View();
         }
 
-        
+
         public IActionResult Add()
         {
 
@@ -86,7 +92,13 @@ namespace LearnCode.MvcUI.Controllers
                 TempData["Error"] = "İşlem yapılamadı";
                 return View();
             }
-            
+
+        }
+
+        public IActionResult AccessDenied()
+        {
+
+            return View();
         }
 
     }

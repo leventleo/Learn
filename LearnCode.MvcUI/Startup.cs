@@ -3,6 +3,7 @@ using LearnCode.Bussiness.Interfaces;
 using LearnCode.Bussiness.SignalIR;
 using LearnCode.Entities;
 using LLearnCode.Bussiness.Interfaces;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -37,7 +38,7 @@ namespace LearnCode.MvcUI
            
             
             services.AddDbContext<LessonDbContext>(ServiceLifetime.Transient);
-
+            
             services.AddSingleton<ILesson, LessonDal>();
             services.AddSingleton<IContent, ContentDal>();
             services.AddSingleton<ISubject, SubjectDal>();
@@ -55,6 +56,19 @@ namespace LearnCode.MvcUI
                 option.InstanceName = "master";
             });
             services.AddSignalR();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(
+             options =>
+             {
+
+                 // Cookie settings
+                 options.Cookie.HttpOnly = true;
+                 options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+
+                 options.LoginPath = "/security/Login";
+                 options.AccessDeniedPath = "/security/AccessDenied";
+                 options.SlidingExpiration = true;
+             });
+
             services.AddMvc();
 
             //services.AddCors(options => options.AddPolicy("CorsPolicy",
@@ -93,8 +107,8 @@ namespace LearnCode.MvcUI
             });
 
 
-            
 
+            app.UseAuthentication();
             app.UseStaticFiles();
             app.UseCookiePolicy();
            
@@ -106,10 +120,10 @@ namespace LearnCode.MvcUI
             });
             app.UseCors("CorsPolicy");
 
-            app.UseSignalR(routes =>
-            {
-                routes.MapHub<UpdateHub>("/updatehub");
-            });
+            //app.UseSignalR(routes =>
+            //{
+            //    routes.MapHub<UpdateHub>("/updatehub");
+            //});
 
             ///signalR Setting
            

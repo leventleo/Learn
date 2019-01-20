@@ -225,9 +225,17 @@ $("span[name='deepsearch']").on("click",function () {
 })
 
 function complete(xhr, status) {
-    alertify.success("Saved")
-    $("#result").text("Saved..").addClass("SuccesResult")
+   
+    if (xhr.status == 403)
+    {
+        alertify.error("UnAuthorized !")
+        $("#result").text("UnAuthorized..").addClass("ErrorResult")
+    }
+    else {
+        alertify.success("Saved")
+        $("#result").text("Saved..").addClass("SuccesResult")
 
+    }
 }
 
 

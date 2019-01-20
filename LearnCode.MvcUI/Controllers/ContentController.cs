@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LearnCode.MvcUI.Controllers
 {
-    [Authorize]
+    [Authorize(Roles ="Admin")]
     public class ContentController : Controller
     {
 

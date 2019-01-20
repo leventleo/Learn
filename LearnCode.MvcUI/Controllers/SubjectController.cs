@@ -8,10 +8,11 @@ using LearnCode.MvcUI.Models;
 using LLearnCode.Bussiness.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+ 
 
 namespace LearnCode.MvcUI.Controllers
 {
-
+    [Authorize(Roles = "Admin")]
     public class SubjectController : Controller
     {
         private readonly ILesson _lesson;
@@ -43,9 +44,8 @@ namespace LearnCode.MvcUI.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        [Authorize]
-        public IActionResult Add(string subject, string id)
+        [HttpPost]      
+       public IActionResult Add(string subject, string id)
         {
             if (!string.IsNullOrEmpty(subject) && !string.IsNullOrEmpty(subject))
             {
@@ -76,7 +76,7 @@ namespace LearnCode.MvcUI.Controllers
         //}
 
         [HttpPost]
-        [Authorize]
+        
         public IActionResult Remove(int id = 0 )
         { //TODO : Refactoring Unit of Work
             var lessonid = 0;
@@ -121,6 +121,7 @@ namespace LearnCode.MvcUI.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public PartialViewResult Getchildlist(int id=0)
         {
             var model = new ListViewModel();
