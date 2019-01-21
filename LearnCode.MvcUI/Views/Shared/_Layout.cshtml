@@ -55,13 +55,11 @@
     <partial name="_CookieConsentPartial" />
 
     <div class="container body-content">
-        <div class="container-fluid" id="deepSearchRange"></div>
-        @RenderBody()
-        
-        @*<footer>
-            <p>&copy; Levent Topçu 2019 - LearnCode</p>
-        </footer>*@
-    </div>
+        <div class="container-fluid" id="hidebody">
+            @RenderBody()
+        </div>
+
+        </div>
 
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>

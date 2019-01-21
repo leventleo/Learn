@@ -209,15 +209,16 @@ $("span[name='deepsearch']").on("click",function () {
         url: "/lesson/deepsearch",
         data: { search: deepsearch },
         success: function (response) {
-
-            $(".body-content").html(response)
+            debugger
+            
+            $("body").html(response)
             
         },
         error: function (err) {
             alertify.error(err.statusText)
         },
         complete: function () {
-            
+            alertify.success("listinig...")
         }
 
     })

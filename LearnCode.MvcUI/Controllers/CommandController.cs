@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace LearnCode.MvcUI.Controllers
 {   [Authorize]
+
     public class CommandController : Controller
     {
         private readonly ICommandIndex _command;

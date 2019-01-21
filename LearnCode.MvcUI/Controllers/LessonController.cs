@@ -202,7 +202,7 @@ namespace LearnCode.MvcUI.Controllers
             }
 
 
-            return View("DeepSearch", searchResult);
+            return PartialView("deepsearch",searchResult);
 
 
         }
